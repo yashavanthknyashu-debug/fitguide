@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitGuide — Gym Student Guide</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#17202a}
+header{background:#111827;color:white;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+.logo{font-size:25px;font-weight:800;color:#4ade80}nav a{color:white;text-decoration:none;margin-left:20px;font-size:14px}
+.hero{padding:75px 7%;background:linear-gradient(135deg,#111827,#1f2937);color:white}
+.hero h1{font-size:48px;margin:0 0 15px}.hero p{font-size:19px;max-width:650px;line-height:1.6}
+.btn{display:inline-block;background:#22c55e;color:#07130b;padding:13px 22px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:12px}
+section{padding:55px 7%}h2{text-align:center;font-size:32px;margin-bottom:30px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:white;padding:25px;border-radius:14px;box-shadow:0 5px 18px #00000012}.card h3{margin-top:0}
+.calculator{max-width:520px;margin:auto;background:white;padding:28px;border-radius:14px;box-shadow:0 5px 18px #00000012}
+input,select,textarea{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #d1d5db;border-radius:7px}
+button{border:0;background:#22c55e;padding:12px 20px;border-radius:7px;font-weight:bold;cursor:pointer}
+#result{margin-top:18px;font-size:18px;font-weight:bold}
+footer{background:#111827;color:white;text-align:center;padding:25px}
+.small{color:#6b7280;line-height:1.6}
+@media(max-width:700px){nav{display:none}.hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">FitGuide</div>
+<nav>
+<a href="#home">Home</a><a href="#workouts">Workouts</a><a href="#diet">Diet</a><a href="#bmi">BMI</a><a href="#progress">Progress</a><a href="#contact">Contact</a>
+</nav>
+</header>
+
+<div class="hero" id="home">
+<h1>Train Smart. Stay Strong.</h1>
+<p>A simple fitness guidance platform for gym students. Learn workouts, understand nutrition, calculate BMI and track your fitness journey.</p>
+<a class="btn" href="#workouts">Start Your Journey</a> <a class="btn" href="https://wa.me/" style="margin-left:8px;background:#fff;color:#111827">WhatsApp</a>
+</div>
+
+<section id="workouts">
+<h2>Workout Plans</h2>
+<div class="cards">
+<div class="card"><h3>Beginner</h3><p class="small">3 days/week · Full body basics · Focus on technique and consistency.</p></div>
+<div class="card"><h3>Intermediate</h3><p class="small">4 days/week · Upper/lower split · Progressive training.</p></div>
+<div class="card"><h3>Advanced</h3><p class="small">5 days/week · Structured split · Training should be adjusted to individual goals.</p></div>
+</div>
+</section>
+
+<section id="diet">
+<h2>Nutrition Guidance</h2>
+<div class="cards">
+<div class="card"><h3>Muscle Gain</h3><p class="small">Focus on adequate protein, balanced meals and sufficient calories. Individual needs vary.</p></div>
+<div class="card"><h3>Weight Management</h3><p class="small">Build meals around vegetables, protein, whole grains and appropriate portions.</p></div>
+<div class="card"><h3>Daily Habits</h3><p class="small">Stay hydrated, sleep well and maintain a consistent training routine.</p></div>
+</div>
+</section>
+
+<section id="bmi">
+<h2>BMI Calculator</h2>
+<div class="calculator">
+<label>Weight (kg)</label><input id="weight" type="number" placeholder="e.g. 70">
+<label>Height (cm)</label><input id="height" type="number" placeholder="e.g. 170">
+<button onclick="calculateBMI()">Calculate BMI</button>
+<div id="result"></div>
+<p class="small">BMI is a general screening measure and does not by itself determine an individual's health or fitness.</p>
+</div>
+</section>
+
+<section id="progress">
+<h2>Student Progress Tracker</h2>
+<div class="calculator">
+<label>Student Name</label><input id="studentName" type="text" placeholder="Your name">
+<label>Current Weight (kg)</label><input id="currentWeight" type="number" placeholder="e.g. 70">
+<label>Workout Days Completed</label><input id="workoutDays" type="number" placeholder="e.g. 4">
+<button onclick="saveProgress()">Save Progress</button>
+<div id="progressResult"></div>
+</div>
+</section>
+
+<section id="contact">
+<h2>Contact / Join</h2>
+<div class="calculator">
+<label>Name</label><input type="text" placeholder="Your name">
+<label>Phone / Email</label><input type="text" placeholder="Your contact" id="contactInfo">
+<label>Message</label><textarea rows="4" placeholder="Tell us your fitness goal" id="message"></textarea>
+<button onclick="alert('Thank you! Please connect this form to your preferred email or backend.')">Send Message</button>
+</div>
+</section>
+
+<footer>© 2026 FitGuide · Gym Student Guidance<br><small>Replace the WhatsApp link and contact details with your own before publishing.</small></footer>
+
+<script>
+function saveProgress(){
+ const name=document.getElementById('studentName').value || 'Student';
+ const weight=document.getElementById('currentWeight').value;
+ const days=document.getElementById('workoutDays').value;
+ document.getElementById('progressResult').innerHTML =
+ `<p><strong>${name}</strong></p><p>Weight: ${weight || '-'} kg</p><p>Workout days completed: ${days || '-'}</p>`;
+}
+function calculateBMI(){
+ const w=parseFloat(document.getElementById('weight').value);
+ const h=parseFloat(document.getElementById('height').value)/100;
+ const r=document.getElementById('result');
+ if(!w||!h||w<=0||h<=0){r.textContent="Please enter valid height and weight.";return;}
+ const bmi=w/(h*h);
+ let category=bmi<18.5?"Underweight":bmi<25?"Normal range":bmi<30?"Overweight":"Obesity range";
+ r.textContent=`BMI: ${bmi.toFixed(1)} — ${category}`;
+}
+</script>
+</body>
+</html>
